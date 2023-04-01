@@ -10366,6 +10366,7 @@ fieldset:disabled .btn {
   background-image: var(--bs-gradient) !important;
 }
 
+
 .user-select-all {
   user-select: all !important;
 }

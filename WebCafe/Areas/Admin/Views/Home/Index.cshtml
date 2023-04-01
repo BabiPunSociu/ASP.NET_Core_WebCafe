@@ -109,6 +109,7 @@
         </div>
     </div>
     <div class="row mt-4">
+        <!-- Biểu đồ -->
         <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
                 <div class="card-header pb-0 pt-3 bg-transparent">
@@ -125,6 +126,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- List danh mục -->
         <div class="col-lg-5">
             <div class="card card-carousel overflow-hidden h-100 p-0">
                 <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
@@ -144,7 +147,17 @@
 
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">@item.TenDm</h6>
-                                                <span class="text-xs">Có 21 sản phẩm, <span class="font-weight-bold">6 hết hàng</span></span>
+
+                                                @{
+                                                    // Danh sách sản phẩm theo mã danh mục
+                                                    var lstSanPham1 = db.SanPhams.Where(sp => sp.MaDm == item.MaDm).ToList();
+                                                    // Tổng số sản phẩm
+                                                    var tongSL = lstSanPham1.Count();
+                                                    // Số lượng hết hàng
+                                                    var hetHang = lstSanPham1.Where(sp => sp.SoLuong == 0).Count();
+                                                }
+
+                                                <span class="text-xs">Có @tongSL sản phẩm, <span class="font-weight-bold">@hetHang hết hàng</span></span>
                                             </div>
                                         </div>
                                         <div class="d-flex">
@@ -157,7 +170,7 @@
                             </ul>
                         </div>
                     </div>
-
+                    <!--
                     <button class="carousel-control-prev w-5 me-3" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
@@ -166,10 +179,13 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+                    -->
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Khách hàng -->
     <div class="row mt-4">
         <div class="col-lg-13 mb-lg-0 mb-4">
             <div class="card ">
@@ -187,7 +203,7 @@
                                     <td class="w-30">
                                         <div class="d-flex px-2 py-1 align-items-center">
                                             <div>
-                                                <img src="@item.AvatarKh" alt="">
+                                                <img src="@Url.Content("~/assets/img/avatarKH/" + @item.AvatarKh)" alt="">
                                             </div>
                                             <div class="ms-4">
                                                 <p class="text-xs font-weight-bold mb-0"></p>
@@ -215,8 +231,6 @@
                                     </td>
                                 </tr>
                             }
-
-
                         </tbody>
                     </table>
                 </div>
@@ -226,4 +240,92 @@
     </div>
 </div>
 
+<!-- Vẽ đồ thị -->
+<script src="~/assets/js/plugins/chartjs.min.js"></script>
+<script>
+    // Lấy đối tượng canvas bằng ID và lấy đối tượng vẽ 2D (context) của canvas
+    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    
+    // Tạo đối tượng gradient để tạo hiệu ứng gradient trên đường thẳng từ điểm (0,230) đến (0,50)
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 
+    // Tạo các điểm dừng màu cho dải màu từ 1->0
+    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 10)');
+    gradientStroke1.addColorStop(0.8, 'rgba(94, 114, 228, 5)');
+    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+    new Chart(ctx1, {
+        type: "line", // Dạng biểu đồ
+        data: {
+            // Các giá trị cho trục Ox
+            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Đơn hàng",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 0,
+                borderColor: "#5e72e4",
+                backgroundColor: gradientStroke1,
+                borderWidth: 3,
+                fill: true,
+                // Giá trị của trục Oy tương ứng
+                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                maxBarThickness: 6
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        padding: 10,
+                        color: '#fbfbfb',
+                        font: {
+                            size: 11,
+                            family: "Open Sans",
+                            style: 'normal',
+                            lineHeight: 2
+                        },
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        color: '#ccc',
+                        padding: 20,
+                        font: {
+                            size: 11,
+                            family: "Open Sans",
+                            style: 'normal',
+                            lineHeight: 2
+                        },
+                    }
+                },
+            },
+        },
+    });
+</script>

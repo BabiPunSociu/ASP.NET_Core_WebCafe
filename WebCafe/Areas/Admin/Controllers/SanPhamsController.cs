@@ -22,8 +22,8 @@ namespace WebCafe.Areas.Admin.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var CuaHangBanCafeContext = _context.SanPhams.Include(s => s.MaDmNavigation);
-            return View(await CuaHangBanCafeContext.ToListAsync());
+            var lstSanPham = await _context.SanPhams.Include(s => s.MaDmNavigation).ToListAsync();
+            return View( lstSanPham );
         }
 
         
