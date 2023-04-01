@@ -1,9 +1,12 @@
-﻿@{
+﻿@using Microsoft.EntityFrameworkCore;
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     WebCafe.Models.CuaHangBanCafeContext db = new WebCafe.Models.CuaHangBanCafeContext();
+    var lstSanPham = db.SanPhams.ToList();
     var khachHang = db.KhachHangs;
     var danhMuc = db.DanhMucSps;
+
 }
 
 <div class="container-fluid py-4">
@@ -147,17 +150,15 @@
 
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">@item.TenDm</h6>
-
                                                 @{
                                                     // Danh sách sản phẩm theo mã danh mục
-                                                    var lstSanPham1 = db.SanPhams.Where(sp => sp.MaDm == item.MaDm).ToList();
+                                                    var lstSanPham1 = lstSanPham.Where(sp => sp.MaDm == item.MaDm).ToList();
                                                     // Tổng số sản phẩm
                                                     var tongSL = lstSanPham1.Count();
                                                     // Số lượng hết hàng
                                                     var hetHang = lstSanPham1.Where(sp => sp.SoLuong == 0).Count();
                                                 }
-
-                                                <span class="text-xs">Có @tongSL sản phẩm, <span class="font-weight-bold">@hetHang hết hàng</span></span>
+                                                <span class="text-xs">Có @tongSL sản phẩm, <span class="font-weight-bold"> @hetHang hết hàng</span></span>
                                             </div>
                                         </div>
                                         <div class="d-flex">
@@ -165,8 +166,6 @@
                                         </div>
                                     </li>
                                 }
-
-
                             </ul>
                         </div>
                     </div>

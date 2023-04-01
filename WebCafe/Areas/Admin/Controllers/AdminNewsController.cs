@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -68,12 +69,14 @@ namespace WebCafe.Areas.Admin.Controllers
         {
             if (id == null)
             {
+                await Console.Out.WriteLineAsync("id null");
                 return NotFound();
             }
 
             var tinTuc = await _context.TinTucs.FindAsync(id);
             if (tinTuc == null)
             {
+                await Console.Out.WriteLineAsync("not found");
                 return NotFound();
             }
             return View(tinTuc);
