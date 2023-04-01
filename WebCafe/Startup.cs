@@ -29,8 +29,9 @@ namespace WebCafe
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<CuaHangBanCafeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCuaHangCafeConnect"),
-                sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()));
+            services.AddDbContext<CuaHangBanCafeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCuaHangCafeConnect")
+                //,sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
+                ));
             services.AddMvc()
             .AddSessionStateTempDataProvider();
             services.AddDistributedMemoryCache();

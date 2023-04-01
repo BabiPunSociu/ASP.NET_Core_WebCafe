@@ -76,54 +76,56 @@
             <ul class="header-nav mb-0">
                 <a asp-action="Index" asp-controller="Home"><img class="logo-header" src="~/img/logo/logo.png" alt=""></a>
                 <li>
-                    <a href="">GIỚI THIỆU</a>
+                    <a href="#">GIỚI THIỆU</a>
                     <ul class="header-subnav">
-                        <li><a href="">LỊCH SỬ</a></li>
-                        <li><a href="">CHÍNH SÁCH & QUY ĐỊNH</a></li>
+                        <li><a href="#">LỊCH SỬ</a></li>
+                        <li><a href="#">CHÍNH SÁCH & QUY ĐỊNH</a></li>
                     </ul>
                 </li>
                 <li><a asp-action="Index" asp-controller="SanPham">SẢN PHẨM</a></li>
                 <li>
                     <a asp-action="Index" asp-controller="TinTuc">TIN TỨC</a>
                     <ul class="header-subnav">
-                        <li><a href="">KHUYẾN MÃI</a></li>
-                        <li><a href="">THÔNG TIN</a></li>
+                        <li><a href="#">KHUYẾN MÃI</a></li>
+                        <li><a href="#">THÔNG TIN</a></li>
                     </ul>
                 </li>
-                <li><a href="">CỬA HÀNG</a></li>
+                <li><a href="#">CỬA HÀNG</a></li>
                 <li>
-                    <a href="">HỖ TRỢ</a>
+                    <a href="#">HỖ TRỢ</a>
                     <ul class="header-subnav">
-                        <li><a href="">DỊCH VỤ</a></li>
-                        <li><a href="">LIÊN HỆ</a></li>
-                        <li><a href="">BÁO CÁO</a></li>
+                        <li><a href="#">DỊCH VỤ</a></li>
+                        <li><a href="#">LIÊN HỆ</a></li>
+                        <li><a href="#">BÁO CÁO</a></li>
                     </ul>
                 </li>
             </ul>
+            <!--
             <div class="search-box">
                 <input type="text" class="search-txt" placeholder="Tìm kiếm">
                 <a href="" class="search-btn">
                     <i class='bx bx-search'></i>
                 </a>
             </div>
+            -->
             @if (Context.Session.GetString("MaKh") != null)
             {
                 <div class="giohang-header" id="CartCount">
                     <a asp-action="Index" asp-controller="GioHang"><img class="cart" src="~/img/cart.png" alt=""></a>
-                    @* @if(gio != null)
-                {
-                <a asp-action="Index" asp-controller="GioHang" >
-                <i class="fa" style="font-size:24px">&#xf07a;</i>
-                <span class='badge badge-warning' id='lblCartCount'> @gio.Count() </span>
-                </a>
-                }
-                else
-                {
-                <a asp-action="Index" asp-controller="GioHang">
-                <i class="fa" style="font-size:24px">&#xf07a;</i>
-                <span class='badge badge-warning' id='lblCartCount'>0</span>
-                </a>
-                }*@
+                    @* @if (gio != null)
+                    {
+                        <a asp-action="Index" asp-controller="GioHang">
+                            <i class="fa" style="font-size:24px">&#xf07a;</i>
+                            <span class='badge badge-warning' id='lblCartCount'> @gio.Count() </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-controller="GioHang">
+                            <i class="fa" style="font-size:24px">&#xf07a;</i>
+                            <span class='badge badge-warning' id='lblCartCount'>0</span>
+                        </a>
+                    }*@
                 </div>
 
                 <div class="dangnhap-button">

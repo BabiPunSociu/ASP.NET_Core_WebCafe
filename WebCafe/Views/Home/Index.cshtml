@@ -3,7 +3,7 @@
 @model IEnumerable<WebCafe.Models.SanPham>
 @{
     ViewData["Title"] = "Home Page";
-    //var spBanChay = Model.Where(x => x.BestSeller == true);
+    var spBanChay = Model.Where(x => x.BestSeller == true);
 }
 <link href='~/css/row_product.css' rel='stylesheet'>
 <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
@@ -27,7 +27,7 @@
     <div class="container mb-">
         <div class="title-product"><h2>Sản phẩm nổi bật</h2></div>
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var item in spBanChay)
             {
                 <div class="col-md-3">
                     <div class="card" style="width: 220px;">

@@ -24,9 +24,8 @@ namespace WebCafe.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var lstSanPham = await _context.SanPhams.Include(s => s.MaDmNavigation).ToListAsync();
-            var lstSanPhamBestSeller = await _context.SanPhams.Where(x => x.BestSeller == true).ToListAsync();
-            return View( lstSanPhamBestSeller);
+            var CuaHangBanCafeContext = _context.SanPhams.Include(s => s.MaDmNavigation);
+            return View(await CuaHangBanCafeContext.ToListAsync());
         }
 
         public async Task<IActionResult> ChangePassword(int id)
