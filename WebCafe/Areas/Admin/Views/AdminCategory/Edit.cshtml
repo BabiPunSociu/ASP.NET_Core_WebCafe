@@ -42,14 +42,11 @@
                 <input asp-for="MoTaDm" class="form-control" />
                 <span asp-validation-for="MoTaDm" class="text-danger"></span>
             </div>
-            <div class="form-group">
-               <div class="form-group">
-                   <label>Trạng Thái:</label>
-                   @Html.DropDownListFor(m => m.TrangThai, 
-            new SelectList(Enum.GetValues(typeof(Category))), 
-            "")
-                  </div>
-            </div>
+                <div class="form-group">
+                    <label asp-for="TrangThai" class="control-label"></label>
+                    @Html.DropDownListFor(m => m.TrangThai,
+                    new SelectList(Enum.GetValues(typeof(Category))),"")
+                </div>
             <div class="form-group">
                 <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
