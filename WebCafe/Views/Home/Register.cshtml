@@ -56,17 +56,23 @@
                     </div>
 
                     <div class="row register-container">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <label asp-for="Phone" class="register-label">Điện thoại</label>
-                            <input asp-for="Phone" type="text" class="register-input" placeholder="Phone">
-                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            @Html.TextBoxFor(row=>row.Phone, new {@class="form-control",placeholder="Số Điện Thoại"})
+                            @Html.ValidationMessageFor(row=>row.Phone)
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
+                            <label asp-for="Diachi" class="register-label">Địa chỉ</label>
+                            @Html.TextBoxFor(row=>row.Diachi, new {@class="form-control",placeholder="Địa chỉ"})
+                            @Html.ValidationMessageFor(row=>row.Diachi)
+                        </div>
+                        <div class="col-sm-3">
                             <label asp-for="Email" class="register-label">Email</label>
-                            <input asp-for="Email" type="email" class="register-input" placeholder="ex@email.com">
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            @Html.TextBoxFor(row=>row.Email, new {@class="form-control",placeholder="Email"})
+                            @Html.ValidationMessageFor(row=>row.Email)
                         </div>
                     </div>
+                    
 
 
                     <div class="row register-container">

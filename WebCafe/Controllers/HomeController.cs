@@ -109,7 +109,7 @@ namespace WebCafe.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(khachhang.TenKh) == true || string.IsNullOrEmpty(khachhang.GioiTinh) == true|| string.IsNullOrEmpty(khachhang.Email) == true/* || khachhang.Phone == null || khachhang.Ngaysinh == null*/)
+                if (string.IsNullOrEmpty(khachhang.TenKh) == true || string.IsNullOrEmpty(khachhang.GioiTinh) == true || string.IsNullOrEmpty(khachhang.Email) == true/* || khachhang.Phone == null || khachhang.Ngaysinh == null*/)
                 {
                     ModelState.AddModelError("", "Thông tin không được để trống");
                     return View(khachhang);
@@ -126,22 +126,21 @@ namespace WebCafe.Controllers
                     ModelState.AddModelError("", "Số điện thoại đã tồn tại");
                     return View(khachhang);
                 }
-                
-                    user.TaiKhoan = khachhang.Email;
-                    user.RoleId = 3;
-                    user.CreateDate = DateTime.Now;
-                    khachhang.CreateDate = DateTime.Now;
-                    HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
-                    HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
-                    HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
-                    _context.Add(khachhang);
-                    _context.Add(user);
-                   await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                user.TaiKhoan = khachhang.Email;
+                user.RoleId = 3;
+                user.CreateDate = DateTime.Now;
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                khachhang.AccountId = user.AccountId;
+                khachhang.CreateDate = user.CreateDate;
+                _context.Add(khachhang);
+                HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
+                HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
+                HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
             return View();
-
-
         }
 
         public IActionResult Login()

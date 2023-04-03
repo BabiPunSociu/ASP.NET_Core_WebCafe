@@ -27,22 +27,24 @@ public partial class SanPham
 
     public string VideoSp { get; set; }
 
-    [Required(ErrorMessage = "Giá Sản Phẩm không được để trống")]
+    //[Required(ErrorMessage = "Giá Sản Phẩm không được để trống")]
     [Range(0, 1000000, ErrorMessage = "Giá Sản Phẩm phải có giá trị từ 0 đến 1 triệu đồng.")]
     public int GiaSp { get; set; }
 
     public bool TrangThai { get; set; }
 
-    [Required(ErrorMessage = "Số Lượng không được để trống")]
+    //[Required(ErrorMessage = "Số Lượng không được để trống")]
     [Range(0, 1000, ErrorMessage = "Số Lượng phải có giá trị từ 0 đến 1000.")]
     public int SoLuong { get; set; }
 
     public bool BestSeller { get; set; }
 
-    [DisplayFormat(DataFormatString = "0: dd/MM/yyyy")]
+    [DataType(DataType.DateTime)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
     public DateTime CreateDate { get; set; }
 
-    [DisplayFormat(DataFormatString = "0: dd/MM/yyyy")]
+    [DataType(DataType.DateTime)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
     public DateTime NgaySua { get; set; }
 
     [Required(ErrorMessage = "Mô Tả Sản Phẩm không được để trống.")]
