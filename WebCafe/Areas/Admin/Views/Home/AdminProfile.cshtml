@@ -16,7 +16,7 @@
         padding: 6px;
     }
 </style>
-<form asp-action="UserDashboard">
+<form asp-action="AdminProfile">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="MaKh" />
     <input type="hidden" asp-for="Password" />
@@ -26,7 +26,7 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="../assets/img/team-1.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img src="@Url.Content("~/img/avatarKH/"+Model.AvatarKh)" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -45,7 +45,7 @@
     </div>
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header pb-0">
                         <div class="d-flex align-items-center">
@@ -94,7 +94,7 @@
                             <div class="row">
                                 <div class="form-group">
                                     <label asp-for="Diachi" class="form-control-label">Địa Chỉ</label>
-                                    <input asp-for="Diachi" class="form-control" type="date">
+                                    <input asp-for="Diachi" class="form-control" type="text">
                                     <span asp-validation-for="Diachi" class="text-danger"></span>
                                 </div>
                             </div>

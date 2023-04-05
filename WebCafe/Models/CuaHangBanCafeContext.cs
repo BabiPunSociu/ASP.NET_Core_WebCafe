@@ -35,7 +35,7 @@ public partial class CuaHangBanCafeContext : DbContext
     public virtual DbSet<TrangThaiDh> TrangThaiDhs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-F1M9PKA\\SQLEXPRESS;Initial Catalog=CuaHangBanCafe;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=DUNGNGUYEN;Initial Catalog=CuaHangBanCafe;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
