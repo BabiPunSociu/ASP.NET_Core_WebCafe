@@ -19,14 +19,14 @@ namespace WebCafe.Areas.Admin.Controllers
             _context = context;
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
             var lstSanPham = await _context.SanPhams.Include(s => s.MaDmNavigation).ToListAsync();
-            return View( lstSanPham );
+            return View(lstSanPham);
         }
 
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,7 +45,7 @@ namespace WebCafe.Areas.Admin.Controllers
             return View(sanPham);
         }
 
-       
+
         public IActionResult Create()
         {
             ViewData["MaDm"] = new SelectList(_context.DanhMucSps, "MaDm", "TenDm");

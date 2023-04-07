@@ -40,48 +40,49 @@
                 <div class="register-or"><span>Or</span></div>
 
                 <div class="container">
-                    <label asp-for="TenKh" class="register-labelname">Tên</label>
-                    <input asp-for="TenKh" type="text" class="register-ipname" placeholder="Full name">
-                    <span asp-validation-for="TenKh" class="text-danger"></span>
+                    <div class="row register-container col-md-12">
+                        <label asp-for="TenKh" class="register-labelname">Tên</label>
+                        <input asp-for="TenKh" type="text" class="register-ipname" placeholder="Full name">
+                        <span asp-validation-for="TenKh" class="text-danger"></span>
+                    </div>
 
                     <div class="row register-container">
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <label asp-for="Ngaysinh" class="register-label">Ngày Sinh</label>
                             <input asp-for="Ngaysinh" type="date" class="register-input" placeholder="dd/mm/yyyy" />
                             <span asp-validation-for="Ngaysinh" class="text-danger"></span>
                         </div>
-                        <div class="col-sm-6">
-                            @Html.DropDownListFor(m => m.GioiTinh, new SelectList(Enum.GetValues(typeof(Gender))), "Chọn Giới Tính:")
+                        <div class="col-md-6">
+                            <label asp-for="GioiTinh" class="register-label">Giới Tính</label>
+                            @Html.DropDownListFor(m => m.GioiTinh, new SelectList(Enum.GetValues(typeof(Gender))) )
                         </div>
                     </div>
 
                     <div class="row register-container">
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <label asp-for="Phone" class="register-label">Điện thoại</label>
                             @Html.TextBoxFor(row=>row.Phone, new {@class="form-control",placeholder="Số Điện Thoại"})
                             @Html.ValidationMessageFor(row=>row.Phone)
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <label asp-for="Diachi" class="register-label">Địa chỉ</label>
                             @Html.TextBoxFor(row=>row.Diachi, new {@class="form-control",placeholder="Địa chỉ"})
                             @Html.ValidationMessageFor(row=>row.Diachi)
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <label asp-for="Email" class="register-label">Email</label>
                             @Html.TextBoxFor(row=>row.Email, new {@class="form-control",placeholder="Email"})
                             @Html.ValidationMessageFor(row=>row.Email)
                         </div>
                     </div>
-                    
-
 
                     <div class="row register-container">
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <label asp-for="Password" class="register-label">Mật khẩu</label>
                             <input asp-for="Password" type="password" id="password" class="register-input" placeholder="Password">
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <label for="password" class="register-label">Nhập lại mật khẩu</label>
                             <input type="password" id="confirm_password" class="register-input" placeholder="Nhập lại mật khẩu">
                         </div>
@@ -112,4 +113,3 @@
     </form>
 </body>
 </html>
-

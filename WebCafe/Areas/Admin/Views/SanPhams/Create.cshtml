@@ -29,13 +29,7 @@
                     <span asp-validation-for="TenSp" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="GiaSp" class="control-label">Giá Sản Phẩm</label>
-                    <input asp-for="GiaSp" class="form-control" />
-                    <span asp-validation-for="GiaSp" class="text-danger"></span>
-                </div>
-            </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="AnhSp" class="control-label">Link Ảnh Sản Phẩm</label>
@@ -46,23 +40,33 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
+                    <label asp-for="GiaSp" class="control-label">Giá Sản Phẩm</label>
+                    <input asp-for="GiaSp" class="form-control" />
+                    <span asp-validation-for="GiaSp" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
                     <label asp-for="VideoSp" class="control-label">Link Video Sản Phẩm</label>
-                    <input asp-for="VideoSp" class="form-control" id="file-video" />
-                    <input type="button" id="choose-video" value="Choose video" class="form-control btn btn-primary col-md-3" />
+                    <input asp-for="VideoSp" class="form-control" />
                     <span asp-validation-for="VideoSp" class="text-danger"></span>
 
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group form-check">
                     <label class="form-check-label">
                         <input class="form-check-input" asp-for="TrangThai" /> Còn Hàng
                     </label>
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
                 <div class="form-group form-check">
                     <label class="form-check-label">
                         <input class="form-check-input" asp-for="BestSeller" /> Sản Phẩm Bán Chạy
@@ -109,6 +113,8 @@
 
         </div>
     </form>
+    <div>
+    </div>
 </div>
 <script>
     var simplemde = new SimpleMDE({ element: document.getElementById("motasp") });
@@ -116,7 +122,6 @@
 </script>
 
 <script>
-    // Chọn ảnh
     var chooseFileButton = document.getElementById('choose-file');
     var fileNameTextbox = document.getElementById('file-name');
 
@@ -127,23 +132,6 @@
 
         fileChooser.addEventListener('change', function () {
             fileNameTextbox.value = fileChooser.files[0].name;
-        });
-
-        fileChooser.click('OK');
-    });
-</script>
-<script>
-    // Chọn video
-    var chooseFileButton = document.getElementById('choose-video');
-    var fileNameTextbox1 = document.getElementById('file-video');
-
-    chooseFileButton.addEventListener('click', function () {
-        var fileChooser = document.createElement('input');
-        fileChooser.setAttribute('type', 'file');
-        fileChooser.setAttribute('accept', '.mp4');
-
-        fileChooser.addEventListener('change', function () {
-            fileNameTextbox1.value = fileChooser.files[0].name;
         });
 
         fileChooser.click('OK');

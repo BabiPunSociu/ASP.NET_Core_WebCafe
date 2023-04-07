@@ -61,7 +61,7 @@ namespace WebCafe.Areas.Admin.Controllers
             return View(account);
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AccountId,TaiKhoan,RoleId,CreateDate")] Account account)

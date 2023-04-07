@@ -73,7 +73,7 @@
                                             <td>@item.MaDh</td>
                                             <td>@Context.Session.GetString("TenKh")</td>
                                             <td><span class="badge badge-success">COD - Thanh Toán Khi Nhận</span></td>
-                                            <td>@item.TongTien.ToString("#,##0") VNĐ</td>
+                                            <td>@item.TongTien.Value.ToString("#,##0") VNĐ</td>
                                             <td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
                                             <td class="align-middle">
                                                 <a asp-action="Details" asp-route-id="@item.MaDh" class="btn btn-primary" style="font-size:12px;">Xem</a>

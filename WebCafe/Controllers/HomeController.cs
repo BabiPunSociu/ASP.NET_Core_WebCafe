@@ -14,7 +14,7 @@ namespace WebCafe.Controllers
 {
     public class HomeController : Controller
     {
-      
+
         private readonly CuaHangBanCafeContext _context;
 
         public HomeController(CuaHangBanCafeContext context)
@@ -40,22 +40,45 @@ namespace WebCafe.Controllers
         [HttpPost]
         public IActionResult ChangePassword(KhachHang customer)
         {
-            if (string.IsNullOrEmpty(customer.Password)==true)
+            if (string.IsNullOrEmpty(customer.Password))
             {
-                ModelState.AddModelError("", "Mật khẩu không được để tr");
+                ModelState.AddModelError("", "Mật khẩu không được để trống");
                 return View(customer);
             }
-            var check = _context.SaveChanges();
-            if (check > 0)
+
+            try
             {
+                // Check if the AccountID value in the KhachHang record exists in the Account table
+                var account = _context.Accounts.Find(customer.AccountId);
+                if (account == null)
+                {
+                    ModelState.AddModelError("", "Không tìm thấy tài khoản");
+                    return View(customer);
+                }
+
+                // Update the KhachHang record with the new password value
+                _context.Update(customer);
+
+                // Save the changes to the database
+                _context.SaveChanges();
+
+                // Redirect the user to the Index action method
                 return RedirectToAction("Index");
             }
-            else
+            catch (DbUpdateException ex)
             {
-                ModelState.AddModelError("", "Lỗi lưu dữ liệu");
+                ModelState.AddModelError("", $"Lỗi lưu dữ liệu: {ex.InnerException?.Message ?? ex.Message}");
+                return View(customer);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Lỗi không xác định: {ex.Message}");
                 return View(customer);
             }
         }
+
+
+
 
 
         public async Task<IActionResult> UserDashboard(int id)
@@ -69,27 +92,28 @@ namespace WebCafe.Controllers
 
 
         [HttpPost]
-        public  IActionResult UserDashboard(KhachHang customer, Account user)
+        public IActionResult UserDashboard(KhachHang customer, Account user)
         {
             if (string.IsNullOrEmpty(customer.TenKh) == true)
             {
                 ModelState.AddModelError("", "Tên không được để trống");
                 return View(customer);
             }
-            _context.Update(customer);
-            var check = _context.SaveChanges();
-            if (check > 0)
+            try
             {
+                _context.Update(customer);
+                _context.SaveChanges();
                 return RedirectToAction("UserDashboard");
             }
-            else
+            catch
             {
+
                 ModelState.AddModelError("", "Lỗi lưu dữ liệu");
                 return View(customer);
             }
         }
 
- 
+
 
         public IActionResult Privacy()
         {
@@ -133,6 +157,8 @@ namespace WebCafe.Controllers
                 await _context.SaveChangesAsync();
                 khachhang.AccountId = user.AccountId;
                 khachhang.CreateDate = user.CreateDate;
+                // set avatar default
+                khachhang.AvatarKh = "avatarKH.jpg";
                 _context.Add(khachhang);
                 HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
                 HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
@@ -152,41 +178,38 @@ namespace WebCafe.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password)
         {
-            if (ModelState.IsValid)
+            var khachhang = _context.KhachHangs.SingleOrDefault(x => x.Email.Trim().ToLower() == email.Trim().ToLower() && x.Password == password);
+            if (khachhang != null)
             {
-
-                var khachhang = _context.KhachHangs.SingleOrDefault(x => x.Email.Trim().ToLower() == email.Trim().ToLower() && x.Password == password);
-                if (khachhang!=null)
+                HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
+                HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
+                HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
+                var checkAcount = _context.Accounts.SingleOrDefault(x => x.TaiKhoan.Trim().ToLower() == email.Trim().ToLower());
+                if (checkAcount != null)
                 {
-
-                    HttpContext.Session.SetString("MaKh",khachhang.MaKh.ToString());
-                    HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
-                    HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
-                    var checkAcount = _context.Accounts.SingleOrDefault(x => x.TaiKhoan.Trim().ToLower() ==email.Trim().ToLower());
-                    if (checkAcount != null)
+                    HttpContext.Session.SetString("AccountID", checkAcount.AccountId.ToString());
+                    HttpContext.Session.SetInt32("RoleID", checkAcount.RoleId);
+                    var roleID = HttpContext.Session.GetInt32("RoleID");
+                    var checkRole = _context.RoleAccounts.SingleOrDefault(x => x.RoleId == roleID);
+                    if (checkRole != null)
                     {
-                        HttpContext.Session.SetString("AccountID", checkAcount.AccountId.ToString());
-                        HttpContext.Session.SetInt32("RoleID", checkAcount.RoleId);
-                        var roleID = HttpContext.Session.GetInt32("RoleID");
-                        var checkRole = _context.RoleAccounts.SingleOrDefault(x => x.RoleId == roleID);
-                        if (checkRole != null)
+                        if (checkRole.RoleId == 1 || checkRole.RoleId == 2)
                         {
-                            if(checkRole.RoleId == 1 || checkRole.RoleId == 2)
-                            {
-                                return RedirectToAction("Index", "Home", new { area = "Admin" });
-                            } else return RedirectToAction("Index");
-
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index");
                         }
                     }
-                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Đăng Nhập Thất Bại! Kiểm Lại Thông Tin Đăng Nhập");
-                    return RedirectToAction("Login");
-                }
+                return RedirectToAction("Index", "Home");
             }
-            return View();
+            else
+            {
+                ModelState.AddModelError("", "Đăng Nhập Thất Bại! Kiểm Lại Thông Tin Đăng Nhập");
+                return View();
+            }
         }
 
         //Logout

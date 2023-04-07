@@ -132,6 +132,71 @@ namespace WebCafe.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: GioHang
+        public IActionResult XemGioHang()
+        {
+            //int TongTienSP = TinhTongThanhTien();
+            //int SoLuongSP = TinhTongSoLuong();
+            //ViewBag.TienVanChuyen = TienVanChuyen;
+            //ViewBag.TongSoLuong = SoLuongSP;
+            //ViewBag.TongTien = TongTienSP;
+            //ViewBag.IsKM = 0;
+            //ViewBag.KhuyenMai = "";
+            //ViewBag.GiamGia = 0;
+            var gioHang = HttpContext.Session.Get<List<CartItem>>("GioHang");
+            ViewBag.ThanhToan = gioHang.Sum(x => x.TongTien);           
+            return View(gioHang);
+        }
 
+        [HttpPost]
+        [Route("/giohang/sales")]
+        public IActionResult XemGioHang(int id)
+        {
+            //string tenKm = Request.Form["maGiamGia"];
+            //string tenKm = tenKM;
+            //int TongTienSP = TinhTongThanhTien();
+            //int SoLuongSP = TinhTongSoLuong();
+            //ViewBag.TienVanChuyen = TienVanChuyen;
+            //ViewBag.TongSoLuong = SoLuongSP;
+            //ViewBag.TongTien = TongTienSP;
+            //ViewBag.IsKM = 0;
+            //ViewBag.GiamGia = 0;
+            var gioHang = HttpContext.Session.Get<List<CartItem>>("GioHang");
+            //List<CartItem> listGioHang = GioHang;
+            KhuyenMai km = _context.KhuyenMais.FirstOrDefault(x => x.MaKm == id && x.TinhTrang == true);
+            ViewModel.ThanhToan = 10000;
+            if (km == null)
+            {
+                //ViewBag.KhuyenMai = "";
+                //ViewBag.IsKM = 1;
+                //ViewBag.ThanhToan = TongTienSP;
+                ViewBag.ThanhToan = 1000000000;
+            }
+            else if (id % 1 == 0)
+            {
+                double TienGiam = 0;
+                //ViewBag.KhuyenMai = MaKM;
+                //ViewBag.IsKM = 3;
+                if (km.LoaiKm == 1)
+                {
+                    //TienGiam = (TongTienSP * (km.GiaTri ?? 0)) / 100;
+                    //ViewBag.ThanhToan = TongTienSP + TienVanChuyen - TienGiam;
+                    //ViewBag.GiamGia = TienGiam;
+                    TienGiam = (gioHang.Sum(x => x.TongTien) * (km.GiaTri ?? 0)) / 100;
+                    ViewBag.ThanhToan = gioHang.Sum(x => x.TongTien) - TienGiam;
+                } else if (km.LoaiKm == 2)
+                {
+                    ViewBag.ThanhToan = gioHang.Sum(x => x.TongTien) - km.GiaTri;
+                }
+            }
+            else
+            {
+                //ViewBag.KhuyenMai = "";
+                //ViewBag.IsKM = 2;
+                ViewBag.ThanhToan = gioHang.Sum(x => x.TongTien);
+            }
+
+            return View(gioHang);
+        }
     }
 }

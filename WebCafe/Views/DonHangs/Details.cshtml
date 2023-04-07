@@ -71,7 +71,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="2">Tổng Tiền</td>
-                                        <td class="text-end">@Model.TongTien.ToString("#,##0") VNĐ</td>
+                                        <td class="text-end">@Model.TongTien.Value.ToString("#,##0") VNĐ</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">Phí Vận Chuyển</td>
@@ -83,7 +83,7 @@
                                     </tr>
                                     <tr class="fw-bold">
                                         <td colspan="2">Tổng Thanh Toán</td>
-                                        <td class="text-end">@Model.TongTien.ToString("#,##0") VNĐ</td>
+                                        <td class="text-end">@Model.TongTien.Value.ToString("#,##0") VNĐ</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -97,7 +97,7 @@
                                     <h3 class="h6">Phương Thức Thanh Toán</h3>
                                     <p>
                                         Thanh Toán Khi Nhận Hàng <br>
-                                        Tổng: @Model.TongTien.ToString("#,##0") VNĐ <span class="badge bg-success rounded-pill">Chưa trả</span>
+                                        Tổng: @Model.TongTien.Value.ToString("#,##0") VNĐ <span class="badge bg-success rounded-pill">Chưa trả</span>
                                     </p>
                                 </div>
                                 <div class="col-lg-6">

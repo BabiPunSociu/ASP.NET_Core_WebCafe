@@ -21,11 +21,10 @@ namespace WebCafe.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
             var maKH = HttpContext.Session.GetString("MaKh");
-            id = int.Parse(maKH);
-            var customerUser = await _context.KhachHangs.FindAsync(id);
+            var customerUser = await _context.KhachHangs.FindAsync(int.Parse(maKH));
             return View(customerUser);
         }
 
@@ -33,7 +32,7 @@ namespace WebCafe.Controllers
         public IActionResult Index(KhachHang customer)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
-            var tt = cart.Sum(t=>t.TongTien);
+            var tt = cart.Sum(t => t.TongTien);
             var maKh = HttpContext.Session.GetString("MaKh");
             if (customer.Diachi == null)
             {
@@ -71,7 +70,6 @@ namespace WebCafe.Controllers
                     chiTietDonHang.TongTien = Convert.ToInt32(item.TongTien);
                     chiTietDonHang.Ngaygiao = 0;
                     _context.Add(chiTietDonHang);
-
 
                     var sanPham = _context.SanPhams.AsNoTracking().SingleOrDefault(x => x.MaSp == item.sanPham.MaSp);
                     sanPham.SoLuong = sanPham.SoLuong - item.soLuong;

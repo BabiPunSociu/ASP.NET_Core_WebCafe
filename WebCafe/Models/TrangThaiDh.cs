@@ -11,7 +11,7 @@ public partial class TrangThaiDh
 
     public string TrangThai { get; set; } = null!;
 
-    public string Mota { get; set; }
+    public string? Mota { get; set; }
 
     public virtual DonHang MaDhNavigation { get; set; } = null!;
 }

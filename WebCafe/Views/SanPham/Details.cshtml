@@ -48,8 +48,9 @@
                         <i class='bx bxs-chevron-right' onclick="nextSlideDetail();"></i>
                     </div>
                     <div class="chuyen-slide-detail">
-                        @for(var i=0;i<5;i++){
-                        <img width="300" height="300" style="width:300px; height:300px; object-fit:cover;" src="@Url.Content("~/img/product/"+@Model.AnhSp)" alt="">
+                        @for (var i = 0; i < 5; i++)
+                        {
+                            <img width="300" height="300" style="width:300px; height:300px; object-fit:cover;" src="@Url.Content("~/img/product/"+@Model.AnhSp)" alt="">
                         }
                     </div>
                 </div>
@@ -181,4 +182,3 @@
         e.preventDefault();
     });
 </script>
-

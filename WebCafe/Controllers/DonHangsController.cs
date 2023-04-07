@@ -82,7 +82,7 @@ namespace WebCafe.Controllers
             return View(donHang);
         }
 
- 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MaDh,MaKh,NgayTao,TrangThaiHuyDon,ThanhToan,NgayThanhToan,Note")] DonHang donHang)

@@ -10,7 +10,8 @@ public partial class CuaHangBanCafeContext : DbContext
     {
     }
 
-    public CuaHangBanCafeContext(DbContextOptions<CuaHangBanCafeContext> options) : base(options)
+    public CuaHangBanCafeContext(DbContextOptions<CuaHangBanCafeContext> options)
+        : base(options)
     {
     }
 
@@ -24,6 +25,8 @@ public partial class CuaHangBanCafeContext : DbContext
 
     public virtual DbSet<KhachHang> KhachHangs { get; set; }
 
+    public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
+
     public virtual DbSet<QuanLyShipper> QuanLyShippers { get; set; }
 
     public virtual DbSet<RoleAccount> RoleAccounts { get; set; }
@@ -35,13 +38,14 @@ public partial class CuaHangBanCafeContext : DbContext
     public virtual DbSet<TrangThaiDh> TrangThaiDhs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=DUNGNGUYEN;Initial Catalog=CuaHangBanCafe;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=SNOWPC\\SQLEXPRESS;Initial Catalog=CuaHangBanCafe;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("PK__Account__349DA586DBEEEBCF");
+            entity.HasKey(e => e.AccountId).HasName("PK__Account__349DA58614E9D175");
 
             entity.ToTable("Account");
 
@@ -60,7 +64,7 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<ChiTietDonHang>(entity =>
         {
-            entity.HasKey(e => e.MaCtdh).HasName("PK__ChiTietD__1E4E40F03AFB7E71");
+            entity.HasKey(e => e.MaCtdh).HasName("PK__ChiTietD__1E4E40F011B1B8E2");
 
             entity.ToTable("ChiTietDonHang");
 
@@ -81,7 +85,7 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<DanhMucSp>(entity =>
         {
-            entity.HasKey(e => e.MaDm).HasName("PK__DanhMucS__2725866EE256EC61");
+            entity.HasKey(e => e.MaDm).HasName("PK__DanhMucS__2725866ED7EA2C7E");
 
             entity.ToTable("DanhMucSP");
 
@@ -97,12 +101,13 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<DonHang>(entity =>
         {
-            entity.HasKey(e => e.MaDh).HasName("PK__DonHang__27258661039BADEE");
+            entity.HasKey(e => e.MaDh).HasName("PK__DonHang__27258661634EA785");
 
             entity.ToTable("DonHang");
 
             entity.Property(e => e.MaDh).HasColumnName("MaDH");
             entity.Property(e => e.MaKh).HasColumnName("MaKH");
+            entity.Property(e => e.MaKm).HasColumnName("MaKM");
             entity.Property(e => e.NgayTao).HasColumnType("date");
             entity.Property(e => e.NgayThanhToan).HasColumnType("date");
 
@@ -110,11 +115,15 @@ public partial class CuaHangBanCafeContext : DbContext
                 .HasForeignKey(d => d.MaKh)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__DonHang__MaKH__5DCAEF64");
+
+            entity.HasOne(d => d.MaKmNavigation).WithMany(p => p.DonHangs)
+                .HasForeignKey(d => d.MaKm)
+                .HasConstraintName("FK_DonHang_KhuyenMai");
         });
 
         modelBuilder.Entity<KhachHang>(entity =>
         {
-            entity.HasKey(e => e.MaKh).HasName("PK__KhachHan__2725CF1E6183654A");
+            entity.HasKey(e => e.MaKh).HasName("PK__KhachHan__2725CF1EC09B3E21");
 
             entity.ToTable("KhachHang");
 
@@ -138,9 +147,34 @@ public partial class CuaHangBanCafeContext : DbContext
                 .HasConstraintName("fk_Account_KhachHang");
         });
 
+        modelBuilder.Entity<KhuyenMai>(entity =>
+        {
+            entity.HasKey(e => e.MaKm);
+
+            entity.ToTable("KhuyenMai");
+
+            entity.Property(e => e.MaKm)
+                .ValueGeneratedNever()
+                .HasColumnName("MaKM");
+            entity.Property(e => e.ChiTiet)
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.LoaiKm).HasColumnName("LoaiKM");
+            entity.Property(e => e.NgayBd)
+                .HasColumnType("datetime")
+                .HasColumnName("NgayBD");
+            entity.Property(e => e.NgayKt)
+                .HasColumnType("datetime")
+                .HasColumnName("NgayKT");
+            entity.Property(e => e.TenKm)
+                .HasMaxLength(30)
+                .IsFixedLength()
+                .HasColumnName("TenKM");
+        });
+
         modelBuilder.Entity<QuanLyShipper>(entity =>
         {
-            entity.HasKey(e => e.MaShipper).HasName("PK__QuanLySh__5C944AF68EF3404B");
+            entity.HasKey(e => e.MaShipper).HasName("PK__QuanLySh__5C944AF6FE52BBCC");
 
             entity.ToTable("QuanLyShipper");
 
@@ -157,7 +191,7 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<RoleAccount>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__RoleAcco__8AFACE3AAD449DBE");
+            entity.HasKey(e => e.RoleId).HasName("PK__RoleAcco__8AFACE3A3BDCA96D");
 
             entity.ToTable("RoleAccount");
 
@@ -170,7 +204,7 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<SanPham>(entity =>
         {
-            entity.HasKey(e => e.MaSp).HasName("PK__SanPham__2725081CBC3461AC");
+            entity.HasKey(e => e.MaSp).HasName("PK__SanPham__2725081C111B2812");
 
             entity.ToTable("SanPham");
 
@@ -179,6 +213,7 @@ public partial class CuaHangBanCafeContext : DbContext
             entity.Property(e => e.CreateDate).HasColumnType("date");
             entity.Property(e => e.GiaSp).HasColumnName("GiaSP");
             entity.Property(e => e.MaDm).HasColumnName("MaDM");
+            entity.Property(e => e.MaKm).HasColumnName("MaKM");
             entity.Property(e => e.MotaSp).HasColumnName("MotaSP");
             entity.Property(e => e.NgaySua).HasColumnType("date");
             entity.Property(e => e.TenSp)
@@ -189,11 +224,15 @@ public partial class CuaHangBanCafeContext : DbContext
             entity.HasOne(d => d.MaDmNavigation).WithMany(p => p.SanPhams)
                 .HasForeignKey(d => d.MaDm)
                 .HasConstraintName("FK__SanPham__MaDM__60A75C0F");
+
+            entity.HasOne(d => d.MaKmNavigation).WithMany(p => p.SanPhams)
+                .HasForeignKey(d => d.MaKm)
+                .HasConstraintName("FK_SanPham_KhuyenMai");
         });
 
         modelBuilder.Entity<TinTuc>(entity =>
         {
-            entity.HasKey(e => e.MaTt).HasName("PK__TinTuc__27250079137A8879");
+            entity.HasKey(e => e.MaTt).HasName("PK__TinTuc__272500792030A31B");
 
             entity.ToTable("TinTuc");
 
@@ -209,7 +248,7 @@ public partial class CuaHangBanCafeContext : DbContext
 
         modelBuilder.Entity<TrangThaiDh>(entity =>
         {
-            entity.HasKey(e => e.MaTtdh).HasName("PK__TrangTha__4484B8558FE01F3D");
+            entity.HasKey(e => e.MaTtdh).HasName("PK__TrangTha__4484B855D98999B9");
 
             entity.ToTable("TrangThaiDH");
 
