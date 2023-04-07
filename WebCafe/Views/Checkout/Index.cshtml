@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using WebCafe.Extension
 @using WebCafe.ModelViews
+@using static WebCafe.Models.KhachHang
 @model WebCafe.Models.KhachHang
 @{
     ViewData["Title"] = "Index";
@@ -34,7 +35,6 @@
         </div>
 
         <div class="row">
-            <!-- Sản phẩm trong Đơn hàng -->
             <div class="col-md-4 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Sản Phẩm Của Bạn</span>
@@ -45,9 +45,7 @@
                     {
                         <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
-                                <a asp-action="Details" asp-route-id="@item.sanPham.MaSp">
-                                    <img style="width:100px;" src="@Url.Content("../img/product/"+@item.sanPham.AnhSp)" alt="Product">
-                                </a>
+                                <a asp-action="Details" asp-route-id="@item.sanPham.MaSp"><img style="width:100px;" src="@Url.Content("../img/product/"+@item.sanPham.AnhSp)" alt="Product"></a>
                                 <h6 class="my-0">@item.sanPham.TenSp</h6>
                                 <small class="text-muted">Số Lượng: @item.soLuong</small>
                             </div>
@@ -86,8 +84,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label asp-for="Ngaysinh">Ngày Sinh:</label>
-                            <!-- mặc định hiển thị ngày sinh của khách hàng -->
-                            <input asp-for="Ngaysinh" type="date" class="form-control" id="inputNgaySinh" placeholder="Ngaysinh" value="@Model.Ngaysinh.Value.ToString("dd/MM/yyyy")" />
+                            <input asp-for="Ngaysinh" type="date" class="form-control" id="inputUsername" placeholder="Username">
                             <span asp-validation-for="Ngaysinh" class="text-danger"></span>
                         </div>
                     </div>
@@ -110,8 +107,8 @@
                         <span asp-validation-for="Diachi" class="text-danger"></span>
                     </div>
 
-                    <!--
-                    <div class="row">
+
+                    @* <div class="row">
                     <div class="col-md-5 mb-3">
                     <label for="country">Country</label>
                     <select class="custom-select d-block w-100" id="country" required>
@@ -139,8 +136,7 @@
                     Zip code required.
                     </div>
                     </div>
-                    </div>
-                    -->
+                    </div>*@
                     <hr class="mb-4">
 
                     <h4 class="mb-3">Hình Thức Thanh Toán</h4>
@@ -153,8 +149,8 @@
                             </select>
                         </div>
                     </div>
-                    <!--
-                    <div class="row">
+
+                    @*<div class="row">
                     <div class="col-md-6 mb-3">
                     <label for="cc-name">Name on card</label>
                     <input type="text" class="form-control" id="cc-name" placeholder="" required>
@@ -186,8 +182,7 @@
                     Security code required
                     </div>
                     </div>
-                    </div>
-                    -->
+                    </div>*@
                     <hr class="mb-4">
                     <button type="submit" value="Create" class="btn btn-primary">Mua Hàng</button>
                 </form>
