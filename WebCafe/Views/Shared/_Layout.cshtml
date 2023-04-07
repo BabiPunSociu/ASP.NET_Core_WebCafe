@@ -97,7 +97,10 @@
             @if (Context.Session.GetString("MaKh") != null)
             {
                 <div class="giohang-header" id="CartCount">
-                    <a asp-action="Index" asp-controller="GioHang"><img class="cart" src="~/img/cart.png" alt=""></a>
+                    <a asp-action="Index" asp-controller="GioHang">
+                        <img class="cart" src="~/img/cart.png" alt="">
+                        <span class="count"></span>
+                        </a>
                     @* @if(gio != null)
                 {
                 <a asp-action="Index" asp-controller="GioHang" >
@@ -262,7 +265,24 @@
             });
         });
     </script>
+     <script>
+       function updateCartCount() {
+            $.ajax({
+                url: '/cart/count',
+                success: function (count) {
+                    $('#CartCount .count').text(count);
+                }
+            });
+        }
 
+        $(document).ready(function () {
+            // Update cart count on page load
+            updateCartCount();
+
+            // Update cart count every 10 seconds
+            setInterval(updateCartCount, 1000);
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

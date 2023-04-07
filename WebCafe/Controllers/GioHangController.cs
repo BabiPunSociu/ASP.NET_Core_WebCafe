@@ -129,6 +129,13 @@ namespace WebCafe.Controllers
             HttpContext.Session.Remove("GioHang");
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        [Route("/cart/count")]
+        public IActionResult GetCartCount()
+        {
+            int count = GioHang.Sum(item => item.soLuong);
+            return Json(count);
+        }
 
         [HttpPost]
         [Route("/giohang/sales")]
