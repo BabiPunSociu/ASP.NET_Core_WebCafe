@@ -177,5 +177,13 @@ namespace WebCafe.Controllers
                 return Json(new { success = false });
             }
         }
+
+        [HttpGet]
+        [Route("/cart/count")]
+        public IActionResult GetCartCount()
+        {
+            int count = GioHang.Sum(item => item.soLuong);
+            return Json(count);
+        }
     }
 }

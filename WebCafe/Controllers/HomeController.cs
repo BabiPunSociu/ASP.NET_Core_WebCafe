@@ -77,10 +77,6 @@ namespace WebCafe.Controllers
             }
         }
 
-
-
-
-
         public async Task<IActionResult> UserDashboard(int id)
         {
             var maKH = HttpContext.Session.GetString("MaKh");
