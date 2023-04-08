@@ -135,6 +135,7 @@ namespace WebCafe.Controllers
         public IActionResult GiamGia(string tenKM)
         {
             List<CartItem> gioHang = GioHang;
+            TotalPriceAfterDiscounting total = new TotalPriceAfterDiscounting();
             try
             {
                 double tongGiam1 = 0, tongGiam2 = 0;
@@ -148,11 +149,18 @@ namespace WebCafe.Controllers
                         {
                             for (var i = 0; i < gioHang.Count; i++)
                             {
+                                gioHang[i].GiamGialoai1 = gioHang[i].TongTien * ((double)km.GiaTri / 100);
                                 tongGiam1 += gioHang[i].TongTien * ((double)km.GiaTri / 100); // Calculate the total discount for this type
-                            }
+                                gioHang[i].MaKm = km.MaKm;
+                            }                         
                         } else if (km.LoaiKm == 2)
                         {
                             tongGiam2 = (double)km.GiaTri;
+                            for (var i = 0; i < gioHang.Count; i++)
+                            {
+                                gioHang[i].GiamGialoai2 = tongGiam2 / gioHang.Count();
+                                gioHang[i].MaKm = km.MaKm;
+                            }
                         }
                     }
                     HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);

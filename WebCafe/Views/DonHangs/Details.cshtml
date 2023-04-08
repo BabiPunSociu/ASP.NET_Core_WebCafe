@@ -69,17 +69,40 @@
 
                                 </tbody>
                                 <tfoot>
+                                    @{
+                                        WebCafe.Models.KhuyenMai khuyenMai = _context.KhuyenMais.SingleOrDefault(k => k.MaKm == Model.MaKm);
+                                        int discount = khuyenMai?.GiaTri.GetValueOrDefault() ?? 0;
+                                        int total = Model.TongTien ?? 0;
+                                        if (discount <= 100 && discount > 0)
+                                        {
+                                            int x = 100 - discount;
+                                            total = (total * 100) / x; 
+                                        }
+                                        else
+                                        {
+                                            total += discount;
+                                        }
+                                    }
                                     <tr>
                                         <td colspan="2">Tổng Tiền</td>
-                                        <td class="text-end">@Model.TongTien.Value.ToString("#,##0") VNĐ</td>
+                                        <td class="text-end">@*@Model.TongTien.Value.ToString("#,##0") VNĐ*@@total.ToString("#,##0") VNĐ</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">Phí Vận Chuyển</td>
                                         <td class="text-end">0</td>
                                     </tr>
+                                    
                                     <tr>
-                                        <td colspan="2">Giảm Giá</td>
-                                        <td class="text-danger text-end">0</td>
+                                        <td colspan="2">Giảm Giá</td>                                    
+                                        @{
+                                            if (discount <= 100 && discount > 0){
+                                                <td class="text-danger text-end"> @discount.ToString()%</td>
+                                            } else
+                                            {
+                                                <td class="text-danger text-end"> @discount.ToString("#,##0") VNĐ</td>
+                                            }
+                                        }
+                                               
                                     </tr>
                                     <tr class="fw-bold">
                                         <td colspan="2">Tổng Thanh Toán</td>

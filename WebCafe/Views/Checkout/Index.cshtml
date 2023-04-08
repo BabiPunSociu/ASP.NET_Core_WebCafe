@@ -49,16 +49,18 @@
                                 <h6 class="my-0">@item.sanPham.TenSp</h6>
                                 <small class="text-muted">Số Lượng: @item.soLuong</small>
                             </div>
-                            <span class="text-muted">@item.TongTien.ToString("#,##0") VNĐ</span>
+                            <span class="text-muted"> <br/>
+                                @item.TongTien.ToString("#,##0") VNĐ</span>
                         </li>
                     }
 
 
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Tổng Tiền:</span>
-                        <strong>@cartCheckout.Sum(x=> x.TongTien).ToString("#,##0") VNĐ</strong>
+                        <strong>@cartCheckout.Sum(x=> x.TongTien - x.GiamGialoai1 - x.GiamGialoai2).ToString("#,##0") VNĐ</strong><br />
+                        <span>Giảm giá: </span><br>
+                        <span>@cartCheckout.Sum(x => (x.GiamGialoai1) == 0 ? x.GiamGialoai2 : x.GiamGialoai1).ToString("#,##0") VNĐ</span>
                     </li>
-
                 </ul>
 
                 <form class="card p-2">

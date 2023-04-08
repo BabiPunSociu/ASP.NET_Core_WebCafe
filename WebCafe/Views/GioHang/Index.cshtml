@@ -2,7 +2,6 @@
 @model List<WebCafe.ModelViews.CartItem>
 
 
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_ProductLayout.cshtml";
@@ -87,8 +86,8 @@
                 </form>
             </div>
                 <div id="total-price" class="column text-lg">
-                    <span class="text-medium"></span>
-                </div>
+                <span class="text-medium">@Model.Sum(x=> x.TongTien).ToString("#,##0") VNĐ</span>
+            </div>
 
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -207,25 +206,25 @@ function RemoveCart(Id) {
         });
     }
 
-    function Sales(Id) {
-        $.ajax({
-            url: '/giohang/sales',
-            type: 'POST',
-            data: { tenKM: Id },
-            success: function (data) {
-                console.log(data);
-                $('#total-price').html(data.GiamGiaLoai2);
-                location.reload();
-            },
-            error: function () {
-                swal.fire({
-                    icon: 'error',
-                    title: 'thất bại',
-                    text: 'đã có lỗi xảy ra',
-                    showconfirmbutton: false,
-                    timer: 1500
-                });
-            }
-        });
-    }
+    //function Sales(Id) {
+    //    $.ajax({
+    //        url: '/giohang/sales',
+    //        type: 'POST',
+    //        data: { tenKM: Id },
+    //        success: function (data) {
+    //            console.log(data);
+    //            $('#total-price').html(data.GiamGiaLoai2);
+    //            location.reload();
+    //        },
+    //        error: function () {
+    //            swal.fire({
+    //                icon: 'error',
+    //                title: 'thất bại',
+    //                text: 'đã có lỗi xảy ra',
+    //                showconfirmbutton: false,
+    //                timer: 1500
+    //            });
+    //        }
+    //    });
+    //}
 </script>

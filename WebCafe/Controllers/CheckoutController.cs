@@ -32,7 +32,8 @@ namespace WebCafe.Controllers
         public IActionResult Index(KhachHang customer)
         {
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
-            var tt = cart.Sum(t => t.TongTien);
+            //var total = HttpContext.Session.Get<TotalPriceAfterDiscounting>("GioHang");
+            var tt = cart.Sum(t => t.TongTien - t.GiamGialoai1 - t.GiamGialoai2);
             var maKh = HttpContext.Session.GetString("MaKh");
             if (customer.Diachi == null)
             {
@@ -58,6 +59,17 @@ namespace WebCafe.Controllers
                 donHang.NgayThanhToan = DateTime.Now;
                 donHang.Note = null;
                 donHang.TongTien = Convert.ToInt32(tt);
+                //if(cart.Sum(x => x.GiamGialoai1) > 0)
+                //{
+                //    donHang.MaKm = 1;
+                //} else if (cart.Sum(x => x.GiamGialoai2) > 0)
+                //{
+                //    donHang.MaKm = 1;
+                //} else
+                //{
+                //    donHang.MaKm = null;
+                //}
+                donHang.MaKm = cart.Sum(x => x.MaKm) / cart.Count();
                 _context.Add(donHang);
                 _context.SaveChanges();
 

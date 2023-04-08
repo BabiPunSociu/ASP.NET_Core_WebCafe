@@ -26,7 +26,7 @@ namespace WebCafe.Controllers
             int pageSize = 6;
             var lstSanPham = await db.SanPhams.AsNoTracking().ToListAsync();
             PagedList<SanPham> lst = new PagedList<SanPham>(lstSanPham, pageNumber, pageSize);
-           ViewBag.tenDanhMuc = "Sản phẩm";
+            ViewBag.tenDanhMuc = "Sản phẩm";
             return View(lst);
         }
         
