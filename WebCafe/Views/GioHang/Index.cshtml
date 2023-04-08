@@ -107,9 +107,11 @@
                     var totalGiamGiaLoai2 = 0;
 
                     for (var i = 0; i < cartItems.length; i++) {
-                        totalTongTien += cartItems[i].TongTien;
-                        totalGiamGiaLoai1 += cartItems[i].GiamGiaLoai1;
-                        totalGiamGiaLoai2 += cartItems[i].GiamGiaLoai2;
+                        console.log("cartItem[" + i + "].TongTien: " + cartItems[i].tongTien);
+                        //console.log("cartItem[" + i + "].GiamGialoai1: " + cartItems[i].giamGialoai1);
+                        totalTongTien += Number(cartItems[i].tongTien);
+                        //totalGiamGiaLoai1 += Number(cartItems[i].giamGiaLoai1);
+                        //totalGiamGiaLoai2 += Number(cartItems[i].giamGiaLoai2);
                     }
 
                     function applyDiscount() {
@@ -121,9 +123,13 @@
                             dataType: 'json',
                             success: function (data) {
                                 console.log(data);
-                                var totalPriceValue = totalTongTien - totalGiamGiaLoai1 - data.GiamGiaLoai2; // Calculate the discounted total price
+                                console.log(typeof data.giamGialoai2);
+                                console.log(totalTongTien);
+                                console.log(data.giamGialoai1);
+                                console.log(Number(data.giamGialoai2 || 0));
+                                var totalPriceValue = totalTongTien - Number(data.giamGialoai1 || 0) - Number(data.giamGialoai2 || 0); // Calculate the discounted total price
                                 console.log(totalPriceValue);
-                                totalPrice.innerHTML = totalPriceValue.toString("#,##0") + " VNĐ"; // Display the formatted total price
+                                totalPrice.innerHTML = isNaN(totalPriceValue) ? "Invalid" : totalPriceValue.toLocaleString("vi-VN") + " VNĐ"; // Display the formatted total price
                             },
                             error: function (xhr, status, error) {
                                 console.error(error);
