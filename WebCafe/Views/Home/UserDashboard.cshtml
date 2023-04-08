@@ -80,9 +80,21 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="text-center">
-                                                <img alt="Andrew Jones" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle img-responsive mt-2" width="128" height="128">
+                                                @{
+                                                    if (Model.AvatarKh != null)
+                                                    {
+                                                        <img id="imgCustomer" src="@Url.Content("../img/customer/"+Model.AvatarKh)" class="rounded-circle img-responsive mt-2" width="128" height="128">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="imgCustomer" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle img-responsive mt-2" width="128" height="128"> 
+                                                    }
+                                                }                                                
                                                 <div class="mt-2">
-                                                    <span class="btn btn-primary"><i class="fa fa-upload"></i></span>
+                                                    <label asp-for="AvatarKh" class="control-label">Link Ảnh Sản Phẩm</label>
+                                                    <input type="hidden" id="file-name" asp-for="AvatarKh" class="form-control col-md-9"/>
+                                                    <input type="button" id="choose-file" value="Choose File" class="form-control btn btn-primary col-md-6" />
+                                                    <span asp-validation-for="AvatarKh" class="text-danger"></span>
                                                 </div>
                                                 <small>Để có hình ảnh đẹp nhất, hãy sử dụng hình ảnh có kích thước tối thiểu 128px x 128px ở định dạng .jpg hoặc.png</small>
                                             </div>
@@ -212,5 +224,23 @@
 
         password.onchange = validatePassword;
         confirm_password.onkeyup = validatePassword;
+    </script>
+    <script>
+        var chooseFileButton = document.getElementById('choose-file');
+        var img = document.getElementById('imgCustomer');
+        var fileNameTextbox = document.getElementById('file-name');
+
+        chooseFileButton.addEventListener('click', function () {
+            var fileChooser = document.createElement('input');
+            fileChooser.setAttribute('type', 'file');
+            fileChooser.setAttribute('accept', '.jpg,.png');
+
+            fileChooser.addEventListener('change', function () {
+                img.setAttribute('src', '../img/customer/' + fileChooser.files[0].name);
+                fileNameTextbox.value = fileChooser.files[0].name;
+            });
+
+            fileChooser.click('OK');
+        });
     </script>
 </body>

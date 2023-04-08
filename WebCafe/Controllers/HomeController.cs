@@ -86,6 +86,38 @@ namespace WebCafe.Controllers
         }
 
 
+        //[HttpPost]
+        //public async Task<IActionResult> UserDashboard(KhachHang customer1)
+        //{
+        //    var customer = _context.KhachHangs.FirstOrDefault(x => x.MaKh == customer1.MaKh);
+        //    //if (string.IsNullOrEmpty(customer.TenKh) == true)
+        //    //{
+        //    //    ModelState.AddModelError("", "Tên không được để trống");
+        //    //    return View(customer);
+        //    //}
+        //    //customer.AvatarKh = customer1.AvatarKh;
+        //    ////_context.Update(customer);
+        //    //await _context.SaveChangesAsync();
+        //    //return RedirectToAction("UserDashboard");
+
+
+        //    if (string.IsNullOrEmpty(customer.TenKh) == true)
+        //    {
+        //        ModelState.AddModelError("", "Tên không được để trống");
+        //        return View(customer);
+        //    }
+        //    _context.Update(customer);
+        //    var check = _context.SaveChanges();
+        //    if (check > 0)
+        //    {
+        //        return RedirectToAction("UserDashboard");
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "Lỗi lưu dữ liệu");
+        //        return View(customer);
+        //    }
+        //}
 
         [HttpPost]
         public IActionResult UserDashboard(KhachHang customer, Account user)
@@ -108,8 +140,6 @@ namespace WebCafe.Controllers
                 return View(customer);
             }
         }
-
-
 
         public IActionResult Privacy()
         {
