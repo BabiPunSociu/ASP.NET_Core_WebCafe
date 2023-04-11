@@ -37,7 +37,16 @@
                       <td>
                         <div class="d-flex px-2">
                           <div>
-                            <img src="@Url.Content("~/img/customer/")+@item.AvatarKh)" class="avatar avatar-sm me-2">
+                            @{
+                                if (item.AvatarKh != null)
+                                {
+                                    <img src="@Url.Content("~/img/customer/" + item.AvatarKh)" style="width:50px;">
+                                }
+                                else
+                                {
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" style="max-width:50px;">
+                                }
+                            }
                           </div>
                           <div class="my-auto">
                             <h6 class="mb-0 text-sm font-weight-bold" style="font-size:12px;">@Html.DisplayFor(modelItem => item.TenKh)</h6>
@@ -45,7 +54,7 @@
                         </div>
                       </td>
                       <td>
-                                    <span class="font-weight-bold" style="font-size:12px;">@item.Ngaysinh.Value.ToString("dd/MM/yyyy")</span>
+                          <span class="font-weight-bold" style="font-size:12px;">@item.Ngaysinh.ToString()</span>
                       </td>
                       <td>
                         <span class="font-weight-bold" style="font-size:12px;">@item.GioiTinh</span>
@@ -57,7 +66,7 @@
                         <span class="font-weight-bold" style="font-size:12px;">@item.Phone</span>
                       </td>
                       <td>
-                                    <span class="font-weight-bold" style="font-size:12px;">@item.CreateDate.ToString("dd/MM/yyyy")</span>
+                          <span class="font-weight-bold" style="font-size:12px;">@item.CreateDate.ToString()</span>
                       </td>
                       <td class="align-middle">
                  

@@ -70,6 +70,9 @@ namespace WebCafe.Controllers
                 //    donHang.MaKm = null;
                 //}
                 donHang.MaKm = cart.Sum(x => x.MaKm) / cart.Count();
+                if(donHang.MaKm < 1) {
+                    donHang.MaKm = null;
+                }
                 _context.Add(donHang);
                 _context.SaveChanges();
 
