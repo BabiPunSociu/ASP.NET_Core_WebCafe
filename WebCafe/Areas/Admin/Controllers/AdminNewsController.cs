@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
@@ -47,6 +47,7 @@ namespace WebCafe.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.ThongBao = "";
             return View();
         }
 
@@ -56,10 +57,15 @@ namespace WebCafe.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                tinTuc.CreateDate = DateTime.Now;
-                _context.Add(tinTuc);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!TinTucExists(tinTuc.TenTt))
+                {
+                    tinTuc.CreateDate = DateTime.Now;
+                    _context.Add(tinTuc);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                // Đưa ra thông báo
+                ViewBag.ThongBao = "Tiêu đề tin tức đã tồn tại, thêm tin tức mới không thành công";
             }
             return View(tinTuc);
         }
@@ -79,6 +85,7 @@ namespace WebCafe.Areas.Admin.Controllers
                 await Console.Out.WriteLineAsync("not found");
                 return NotFound();
             }
+            ViewBag.ThongBao = "";
             return View(tinTuc);
         }
 
@@ -91,29 +98,21 @@ namespace WebCafe.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
-                try
+                // Kiểm tra tin tức đã tồn tại trước đó chưa
+                if (!TinTucExists(tinTuc.TenTt))
                 {
                     _context.Update(tinTuc);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TinTucExists(tinTuc.MaTt))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                // Đưa ra thông báo
+                ViewBag.ThongBao = "Tiêu đề tin tức đã tồn tại, sửa tin tức không thành công";
             }
             return View(tinTuc);
         }
+
 
 
         public async Task<IActionResult> Delete(int? id)
@@ -134,19 +133,22 @@ namespace WebCafe.Areas.Admin.Controllers
         }
 
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var tinTuc = await _context.TinTucs.FindAsync(id);
+            if (tinTuc == null)
+                return View(id);
             _context.TinTucs.Remove(tinTuc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TinTucExists(int id)
+        private bool TinTucExists(string TieuDe)
         {
-            return _context.TinTucs.Any(e => e.MaTt == id);
+            return _context.TinTucs.Any(e => e.TenTt == TieuDe);
         }
     }
 }
+
