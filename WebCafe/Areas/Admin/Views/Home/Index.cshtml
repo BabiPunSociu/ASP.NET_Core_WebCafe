@@ -1,12 +1,13 @@
-﻿@using Microsoft.EntityFrameworkCore;
+@using Microsoft.EntityFrameworkCore;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
     WebCafe.Models.CuaHangBanCafeContext db = new WebCafe.Models.CuaHangBanCafeContext();
     var lstSanPham = db.SanPhams.ToList();
-    var khachHang = db.KhachHangs;
     var danhMuc = db.DanhMucSps;
 
+    var khachHang = db.KhachHangs.Where(x => x.CreateDate >= DateTime.Now.AddDays(-7)).ToList();
 }
 
 <div class="container-fluid py-4">
@@ -134,7 +135,6 @@
         <div class="col-lg-5">
             <div class="card card-carousel overflow-hidden h-100 p-0">
                 <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
-
                     <div class="card">
                         <div class="card-header pb-0 p-3">
                             <h6 class="mb-0">Danh Mục</h6>
@@ -145,9 +145,7 @@
                                 {
                                     <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                                         <div class="d-flex align-items-center">
-
-                                            <img class="text-white opacity-10" src="@Url.Content("../img/category/"+@item.AnhDm)" style="width:40px;" />
-
+                                            <img class="text-white opacity-10" src="@Url.Content("~/img/category/"+@item.AnhDm)" style="width:40px;" />
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">@item.TenDm</h6>
                                                 @{
@@ -162,23 +160,15 @@
                                             </div>
                                         </div>
                                         <div class="d-flex">
-                                            <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
+                                            <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto">
+                                                <a class="ni ni-bold-right" aria-hidden="true" asp-controller="SanPham" asp-action="Index"></a>
+                                            </button>
                                         </div>
                                     </li>
                                 }
                             </ul>
                         </div>
                     </div>
-                    <!--
-                    <button class="carousel-control-prev w-5 me-3" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next w-5 me-3" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    -->
                 </div>
             </div>
         </div>
@@ -190,7 +180,7 @@
             <div class="card ">
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
-                        <h6 class="mb-2">Khách Hàng Mới</h6>
+                        <h6 class="mb-2">Khách Hàng Mới Trong 7 Ngày Gần Đây</h6>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -202,7 +192,7 @@
                                     <td class="w-30">
                                         <div class="d-flex px-2 py-1 align-items-center">
                                             <div>
-                                                <img src="@Url.Content("~/assets/img/avatarKH/" + @item.AvatarKh)" alt="">
+                                                <img src="@Url.Content("~/img/avatarKH/" + @item.AvatarKh)" alt="" class="avatar avatar-sm me-2">
                                             </div>
                                             <div class="ms-4">
                                                 <p class="text-xs font-weight-bold mb-0"></p>
@@ -244,7 +234,7 @@
 <script>
     // Lấy đối tượng canvas bằng ID và lấy đối tượng vẽ 2D (context) của canvas
     var ctx1 = document.getElementById("chart-line").getContext("2d");
-    
+
     // Tạo đối tượng gradient để tạo hiệu ứng gradient trên đường thẳng từ điểm (0,230) đến (0,50)
     var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 
