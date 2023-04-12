@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using WebCafe.Models;
 namespace WebCafe.Controllers
@@ -155,7 +156,7 @@ namespace WebCafe.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("MaKh,TenKh,GioiTinh,AvatarKh,Diachi,Ngaysinh,Phone,Email,Password,CreateDate")] KhachHang khachhang, Account user)
+        public async Task<IActionResult> Register([Bind("MaKh,TenKh,GioiTinh,AvatarKh,Diachi,Ngaysinh,Phone,Email,Password,CreateDate")] KhachHang khachhang,Account user)
         {
             if (ModelState.IsValid)
             {
@@ -176,6 +177,7 @@ namespace WebCafe.Controllers
                     ModelState.AddModelError("", "Số điện thoại đã tồn tại");
                     return View(khachhang);
                 }
+                
                 user.TaiKhoan = khachhang.Email;
                 user.RoleId = 3;
                 user.CreateDate = DateTime.Now;
@@ -186,15 +188,18 @@ namespace WebCafe.Controllers
                 // set avatar default
                 khachhang.AvatarKh = "avatarKH.jpg";
                 _context.Add(khachhang);
-                HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
-                HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
-                HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                //HttpContext.Session.SetString("MaKh", khachhang.MaKh.ToString());
+                //HttpContext.Session.SetString("TenKh", khachhang.TenKh.ToString());
+                //HttpContext.Session.SetString("Email", khachhang.Email.Trim().ToLower());
+                return RedirectToAction("RegisterSuccess");
             }
             return View();
         }
-
+        public IActionResult RegisterSuccess()
+        {
+            return View();
+        }
         public IActionResult Login()
         {
             return View();

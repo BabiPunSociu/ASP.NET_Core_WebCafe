@@ -5,6 +5,10 @@ namespace WebCafe.Models;
 
 public partial class KhachHang
 {
+    public KhachHang()
+    {
+        DonHangs = new HashSet<DonHang>();
+    }
     public int MaKh { get; set; }
 
     public string TenKh { get; set; } = null!;
