@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -22,8 +22,9 @@ namespace WebCafe.Areas.Admin.Controllers
         public async Task<IActionResult> AdminProfile()
         {
             var maKH = HttpContext.Session.GetString("MaKh");
+            if(maKH == null)
+                return RedirectToAction("Login", "Home", new { area = "" });
             var customerUser = await _context.KhachHangs.FindAsync(int.Parse(maKH));
-
             return View(customerUser);
         }
         [HttpPost]
@@ -34,7 +35,6 @@ namespace WebCafe.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Tên không được để trống");
                 return View(customer);
             }
-
             var khachHangToUpdate = _context.KhachHangs.Include(a => a.Account).SingleOrDefault(k => k.MaKh == customer.MaKh);
             if (khachHangToUpdate != null)
             {
@@ -46,8 +46,8 @@ namespace WebCafe.Areas.Admin.Controllers
                 khachHangToUpdate.Ngaysinh = customer.Ngaysinh;
                 khachHangToUpdate.GioiTinh = customer.GioiTinh;
                 // Account.TaiKhoan trùng với KhachHang.Email
-                khachHangToUpdate.Account.TaiKhoan = customer.Email;
-
+                if(khachHangToUpdate.Account != null)
+                    khachHangToUpdate.Account.TaiKhoan = customer.Email;
                 _context.Update(khachHangToUpdate);
                 var check = _context.SaveChanges();
                 if (check > 0)
