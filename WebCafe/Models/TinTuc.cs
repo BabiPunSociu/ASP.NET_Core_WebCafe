@@ -36,5 +36,5 @@ public partial class TinTuc
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
     public DateTime CreateDate { get; set; }
 
-    public bool? LoaiTin { get; set; }
+    public bool LoaiTin { get; set; }
 }
