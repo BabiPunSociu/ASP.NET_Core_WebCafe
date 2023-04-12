@@ -5,6 +5,9 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_ProductLayout.cshtml";
+    
+    CuaHangBanCafeContext db = new CuaHangBanCafeContext();
+    var lstSanPham = db.SanPhams.ToList();
 }
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="~/css/cart.css" />
@@ -39,8 +42,11 @@
                             <td class="text-center">
                                 <div class="count-input">
                                     <label for="txtsoLuong">Số Lượng:</label>
-                                    <input onclick="UpdateCart(@item.sanPham.MaSp)" id="txtsoLuong-@item.sanPham.MaSp" name="txtsoLuong" max="100" step="1" value="@item.soLuong" type="number"
+                                    @{ var sanPham = lstSanPham.Where(x => x.MaSp.Equals(item.sanPham.MaSp)).SingleOrDefault(); }
+                                    <input onclick="UpdateCart(@item.sanPham.MaSp)" id="txtsoLuong-@item.sanPham.MaSp" 
+                                           name="txtsoLuong" min="1" max="@sanPham.SoLuong" step="1" value="@item.soLuong" type="number"
                                            style="width:80px; text-align:center; margin-left:8px;" />
+                                    
                                 </div>
                             </td>
                             <td class="text-center text-lg text-medium">@item.TongTien.ToString("#,##0") VNĐ</td>
