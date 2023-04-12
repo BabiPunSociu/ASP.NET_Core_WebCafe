@@ -9,7 +9,7 @@ public partial class SanPham
     [Key]
     public int MaSp { get; set; }
 
-    public int? MaDm { get; set; }
+    public int MaDm { get; set; }
 
     [Display(Name = "TenSp")]
     [Required(ErrorMessage = "Tên Sản Phẩm không được để trống.")]
