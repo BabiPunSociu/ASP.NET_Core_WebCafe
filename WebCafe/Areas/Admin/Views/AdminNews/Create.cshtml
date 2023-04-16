@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 </head>
 <div class="card-body" style="margin-top:40px;background-color: var(--bs-body-bg); border-radius:12px; padding:20px;">
-    <form asp-action="Create">
+    <form asp-action="Create" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <a asp-action="Index" style="font-size:30px;"><i class='bx bx-arrow-back'></i></a>
         <h5 class="text-uppercase">Thêm Tin Mới</h5>
@@ -33,13 +33,25 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            @*<div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="AnhTt" class="control-label">Link Ảnh (Video) Tin Tức</label>
                     <input asp-for="AnhTt" class="form-control" id="file-name" />
                     <span asp-validation-for="AnhTt" class="text-danger"></span>
 
                     <input type="button" id="choose-file" value="Choose File" class="form-control btn btn-primary col-md-6" style="margin-top:3px;" />
+                </div>
+            </div>*@
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="AnhTt" class="control-label">Link Ảnh (Video) Tin Tức</label>
+                    <br />
+                    <input type="file" id="image-file" name="file" accept=".jpg,.png" onchange="updateFileName()" />
+                    <br /><br />
+                    <input asp-for="AnhTt" class="form-control" id="file-name" readonly="readonly" />
+                    <span asp-validation-for="AnhTt" class="text-danger"></span>
+                    <br /><br />
+                    <input type="button" id="choose-file" value="Choose File" class="btn btn-primary" style="margin-top:3px;" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -83,18 +95,34 @@
 </script>
 
 <script>
+    //var chooseFileButton = document.getElementById('choose-file');
+    //var fileNameTextbox = document.getElementById('file-name');
+
+    //chooseFileButton.addEventListener('click', function () {
+    //    var fileChooser = document.createElement('input');
+    //    fileChooser.setAttribute('type', 'file');
+    //    fileChooser.setAttribute('accept', '.jpg,.png');
+
+    //    fileChooser.addEventListener('change', function () {
+    //        fileNameTextbox.value = fileChooser.files[0].name;
+    //    });
+
+    //    fileChooser.click('OK');
+    //});
+
     var chooseFileButton = document.getElementById('choose-file');
-    var fileNameTextbox = document.getElementById('file-name');
 
     chooseFileButton.addEventListener('click', function () {
-        var fileChooser = document.createElement('input');
-        fileChooser.setAttribute('type', 'file');
-        fileChooser.setAttribute('accept', '.jpg,.png');
-
-        fileChooser.addEventListener('change', function () {
-            fileNameTextbox.value = fileChooser.files[0].name;
-        });
-
-        fileChooser.click('OK');
+        var fileChooser = document.querySelector('#image-file');
+        fileChooser.click();
     });
+
+    function updateFileName() {
+        var fileNameTextbox = document.getElementById('file-name');
+        var fileChooser = document.querySelector('#image-file');
+
+        if (fileChooser.value.length > 0) {
+            fileNameTextbox.value = fileChooser.files[0].name;
+        }
+    }
 </script>

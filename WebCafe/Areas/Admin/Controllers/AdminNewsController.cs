@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebCafe.Models;
-
+using Microsoft.AspNetCore.Hosting;
 namespace WebCafe.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AdminNewsController : Controller
     {
         private readonly CuaHangBanCafeContext _context;
-
-        public AdminNewsController(CuaHangBanCafeContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public AdminNewsController(CuaHangBanCafeContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -53,13 +55,36 @@ namespace WebCafe.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaTt,TenTt,AnhTt,Motangan,Motadai,Tacgia,CreateDate,LoaiTin")] TinTuc tinTuc)
+        public async Task<IActionResult> Create([Bind("MaTt,TenTt,AnhTt,Motangan,Motadai,Tacgia,CreateDate,LoaiTin")] TinTuc tinTuc, IFormFile file)
         {
             if (ModelState.IsValid)
             {
                 if (!TinTucExists(tinTuc.TenTt))
                 {
                     tinTuc.CreateDate = DateTime.Now;
+                    // Check if a file is selected
+                    if (file != null && file.Length > 0)
+                    {
+                        // Get the filename and extension
+                        var fileName = Path.GetFileName(file.FileName);
+                        var fileExt = Path.GetExtension(fileName);
+
+                        // Generate a unique filename
+                        var uniqueFileName = Guid.NewGuid().ToString() + fileExt;
+
+                        // Combine the path to save the file
+                        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/tintuc", uniqueFileName);
+
+                        // Copy the file to the path
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Save the filename to the model
+                        tinTuc.AnhTt = uniqueFileName;
+                    }
+
                     _context.Add(tinTuc);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -69,6 +94,7 @@ namespace WebCafe.Areas.Admin.Controllers
             }
             return View(tinTuc);
         }
+
 
 
         public async Task<IActionResult> Edit(int? id)
@@ -151,4 +177,3 @@ namespace WebCafe.Areas.Admin.Controllers
         }
     }
 }
-
